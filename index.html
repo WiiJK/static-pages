@@ -5,6 +5,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Shiraha 的静态页面</title>
+    <script>const authenticationClient = new AuthenticationClient({
+        appId: '648ebcf7907f49f2fdfcf4d7', // 应用 ID
+        secret: '7e6d4a213f64989db611f62f4b3f35f1',// 应用 Secret
+        appHost: 'https://xingqiuxinneng.authing.cn',// 应用对应的用户池域名
+        redirectUri: 'https://tools.xingqiuxinneng.com',// 认证完成后的重定向目标 URL
+      });
+      //生成 OIDC 协议的用户登录链接
+      const data = authenticationClient.buildAuthorizeUrl({
+        scope: "openid profile offline_access"
+      })
+      import { ManagementClient } from 'authing-js-sdk'
+      const managementClient = new ManagementClient({
+        userPoolId: '648ebcf61bc97f8b2adb09c1',// 用户池 ID
+        secret: 'f302f52cdc2d87591542adfc53c8fcf7',// 用户池密钥
+      })
+      //创建用户
+      const data = await managementClient.users.create({
+        email: 'admin@test.com',
+        password: 'password',
+      });
+      try {
+        const user = await authing.loginByEmail('test@example.com', 'passw0rd')
+      } catch (error) {
+        console.log(error.code) // 2004
+        console.log(error.message) // 用户不存在
+      }
+      </script>
     <style>
         body {
             margin: 0;
